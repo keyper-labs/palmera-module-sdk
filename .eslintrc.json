@@ -1,0 +1,13 @@
+{
+  "env": {
+    "node": true,
+    "es2021": true
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+  "rules": {
+    "unused-imports/no-unused-imports-ts": "error",
+    "@typescript-eslint/consistent-type-imports": "error"
+  },
+  "ignorePatterns": ["node_modules/", ".github/", "dist/"],
+  "plugins": ["unused-imports", "@typescript-eslint", "prettier"]
+}

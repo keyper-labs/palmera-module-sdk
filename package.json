@@ -1,0 +1,68 @@
+{
+  "name": "@keyper-labs/palmera-module-sdk",
+  "version": "0.2.6",
+  "description": "Palmera module sdk",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
+  "scripts": {
+    "lint": "eslint src/**/*.ts",
+    "build": "rm -r ./dist & tsc",
+    "build:hardhat": "npx hardhat clean && npx hardhat compile",
+    "hardhat": "npx hardhat",
+    "node": "npx hardhat node",
+    "test": "npx hardhat test",
+    "docs": "jsdoc2md ./dist/src/Palmera.js > ./Palmera.md"
+  },
+  "author": "Keyper Labs (https://palmeradao.xyz)",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://palmeradao.xyz",
+  "keywords": [
+    "Ethereum",
+    "Safe",
+    "Palmera",
+    "DAO",
+    "SDK"
+  ],
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.7",
+    "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@nomicfoundation/hardhat-foundry": "^1.1.2",
+    "@nomicfoundation/hardhat-ignition": "^0.15.5",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.5",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.11",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.9",
+    "@nomicfoundation/ignition-core": "^0.15.5",
+    "@safe-global/safe-core-sdk-types": "^4.0.2",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/chai": "^4.3.17",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^22.4.1",
+    "chai": "^4.5.0",
+    "eslint": "^9.9.1",
+    "globals": "^15.9.0",
+    "hardhat": "^2.22.8",
+    "hardhat-contract-sizer": "^2.10.0",
+    "hardhat-gas-reporter": "^1.0.10",
+    "jsdoc-to-markdown": "^9.0.2",
+    "prettier": "^3.3.3",
+    "solidity-coverage": "^0.8.12",
+    "ts-node": "^10.9.2",
+    "typechain": "^8.3.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.3.0"
+  },
+  "dependencies": {
+    "@safe-global/api-kit": "^2.3.2",
+    "@safe-global/protocol-kit": "^3.1.1",
+    "abitype": "1.0.2",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.2",
+    "viem": "^2.20.0"
+  }
+}
