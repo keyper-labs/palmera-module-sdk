@@ -1,6 +1,6 @@
 # Palmera
 
-[![npm Version](https://badge.fury.io/js/%40keyper-labs%2Fpalmera-module-sdk.svg)](https://badge.fury.io/js/%40keyper-labs%2Fpalmera-module-sdk)
+[![npm version](https://badge.fury.io/js/@keyper-labs%2Fpalmera-module-sdk.svg)](https://badge.fury.io/js/@keyper-labs%2Fpalmera-module-sdk)
 [![GitHub Release](https://img.shields.io/github/release/keyper-labs/palmera-module-sdk.svg?style=flat)](https://github.com/keyper-labs/palmera-module-sdk/releases)
 [![GitHub](https://img.shields.io/github/license/keyper-labs/palmera-module-sdk)](https://github.com/keyper-labs/palmera-module-sdk/blob/main/LICENSE.md)
 
@@ -33,7 +33,7 @@ npm install @keyper-labs/palmera-module-sdk
 
 There are two ways to create a Palmera instance.
 
-#### a. Initialize with an existing Safe intance
+#### a. Initialize with an existing Safe instance
 
 Using an existing Safe instance, you can initialize a Palmera SDK instance.
 
@@ -64,7 +64,7 @@ const palmeraSdk = await Palmera.create({
 
 ### 2. Prepare your Safe
 
-You need to enable Palmera module and set Palmera Guard in order to create a new organization in Palmera
+You need to enable the Palmera module and set the Palmera Guard in order to create a new organization in Palmera.
 
 ```js
 const tx = await palmeraSDK.setUpSafeTx()
@@ -73,7 +73,7 @@ const result = await safeSDK.executeTransaction(tx)
 
 ### 3. Create your first organization
 
-Create and execute a Safe transaction to register your new organization. This requires an organization name, which can be something that describes your organization or a random name.
+Create and execute a Safe transaction to register your new organization. This requires an organization name, which can be a descriptive name or a random one.
 
 ```js
 const tx = await palmeraSDK.registerOrganizationTx('Some name')
@@ -87,7 +87,7 @@ const isRegistered = await palmeraSDK.isOrganizationRegistered()
 const orgHash = await palmeraSdk.getOrgHashBySafe(safeAddress)
 ```
 
-## Need Help or Have Questions? (WIP)
+## Need Help or Have Questions?
 
 If you have any doubts, questions, or need assistance, feel free to reach out! [Here you will find how to get support.](https://t.me/palmera_support)
 

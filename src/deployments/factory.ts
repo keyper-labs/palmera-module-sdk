@@ -1,5 +1,7 @@
 import PALMERA_MODULE_V1 from './v1/palmeraModule.json'
 import PALMERA_MODULE_V1_NON_DETERMINISTIC from './v1/palmeraModuleNonDeterministic.json'
+import PALMERA_GUARD_V1_NON_DETERMINISTIC from './v1/palmeraGuardNonDeterministic.json'
+
 import {
   AddressType,
   DeploymentFilter,
@@ -12,9 +14,9 @@ const PALMERA_MODULE_DEPLOYMENTS_NON_DETERMINISTIC = [
   PALMERA_MODULE_V1_NON_DETERMINISTIC,
 ] as SingletonDeploymentNonDeterministicJSON[]
 
-export const getPalmeraModuleDeployment = (filter?: DeploymentFilter) => {
-  return findDeployment(filter, PALMERA_MODULE_DEPLOYMENTS)
-}
+const PALMERA_GUARD_DEPLOYMENTS_NON_DETERMINISTIC = [
+  PALMERA_GUARD_V1_NON_DETERMINISTIC,
+] as SingletonDeploymentNonDeterministicJSON[]
 
 const findDeployment = (
   filter: DeploymentFilter = {},
@@ -36,10 +38,6 @@ const findDeployment = (
   return deploymentJson.deployments[type].address
 }
 
-export const getPalmeraModuleDeploymentNonDeterministic = (filter?: DeploymentFilter) => {
-  return findDeploymentNonDeterministic(filter, PALMERA_MODULE_DEPLOYMENTS_NON_DETERMINISTIC)
-}
-
 const findDeploymentNonDeterministic = (
   filter: DeploymentFilter = {},
   deployments: SingletonDeploymentNonDeterministicJSON[],
@@ -57,4 +55,16 @@ const findDeploymentNonDeterministic = (
   if (!deploymentJson.networkAddress[network]) return undefined
 
   return deploymentJson.networkAddress[network]
+}
+
+export const getPalmeraModuleDeployment = (filter?: DeploymentFilter) => {
+  return findDeployment(filter, PALMERA_MODULE_DEPLOYMENTS)
+}
+
+export const getPalmeraModuleDeploymentNonDeterministic = (filter?: DeploymentFilter) => {
+  return findDeploymentNonDeterministic(filter, PALMERA_MODULE_DEPLOYMENTS_NON_DETERMINISTIC)
+}
+
+export const getPalmeraGuardDeploymentNonDeterministic = (filter?: DeploymentFilter) => {
+  return findDeploymentNonDeterministic(filter, PALMERA_GUARD_DEPLOYMENTS_NON_DETERMINISTIC)
 }
