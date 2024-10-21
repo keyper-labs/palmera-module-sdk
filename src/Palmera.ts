@@ -8,7 +8,6 @@ import {
 } from '@safe-global/safe-core-sdk-types'
 import { decodeFunctionResult, encodeFunctionData, Hex, zeroAddress } from 'viem'
 import palmeraModule from './assets/palmeraModule'
-import palmeraGuard from './assets/palmeraGuard'
 import {
   AddOwnerWithThresholdParams,
   AddSafeTxParams,
@@ -34,7 +33,7 @@ import {
   UpdateDepthLimitsParams,
   UpdateSuperParams,
 } from './types'
-import { getPalmeraModuleDeploymentNonDeterministic } from './deployments/factory'
+import { getPalmeraGuardDeploymentNonDeterministic, getPalmeraModuleDeploymentNonDeterministic } from './deployments/factory'
 
 /**
  * The Palmera class provides a set of methods to interact with the Palmera module and guard.
@@ -46,6 +45,7 @@ class Palmera {
   #orgHash!: Hex
   #chainId!: bigint
   #moduleAddress!: Hex
+  #guardAddress!: Hex
 
   /**
    * Initializes a new instance of the Palmera class.
@@ -79,14 +79,22 @@ class Palmera {
     this.#safeAddress = (await this.#protocolKit.getAddress()) as Hex
     this.#chainId = await this.#protocolKit.getChainId()
 
-    const deployment = getPalmeraModuleDeploymentNonDeterministic({
+    const moduleAddress = getPalmeraModuleDeploymentNonDeterministic({
       network: this.#chainId.toString(),
       released: true,
       version: '1',
     })
-    if (!deployment) throw new Error('Palmera module not found for given network')
+    if (!moduleAddress) throw new Error('Palmera module not found for given network')
 
-    this.#moduleAddress = deployment as Hex
+    const guardAddress = getPalmeraGuardDeploymentNonDeterministic({
+      network: this.#chainId.toString(),
+      released: true,
+      version: '1',
+    })
+
+
+    this.#moduleAddress = moduleAddress as Hex
+    this.#guardAddress = guardAddress as Hex
     this.#orgHash = await this.getOrgHashBySafe(this.#safeAddress)
   }
 
@@ -155,7 +163,7 @@ class Palmera {
    @returns {Promise<SafeTransaction>} A promise that resolves to a SafeTransaction.
    */
   async enableGuardTx(): Promise<SafeTransaction> {
-    return this.#protocolKit.createEnableGuardTx(palmeraGuard.defaultAddress)
+    return this.#protocolKit.createEnableGuardTx(this.#guardAddress)
   }
 
   /**

@@ -3,7 +3,7 @@
   "contractName": "PalmeraModule",
   "version": "1.0.0",
   "networkAddress": {
-    "137": "0x0bc93BAe0b12BE14E38a89D23A3f26839172b297",
+    "137": "0xe442648faF248ceEBb5F090cE1900483BC13ed3F",
     "11155111": "0x9380FB80c19C13a654a101C3200e7CA93C8357c3"
   }
 }
