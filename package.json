@@ -1,6 +1,6 @@
 {
   "name": "@keyper-labs/palmera-module-sdk",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "Palmera module sdk",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
