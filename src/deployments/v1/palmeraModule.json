@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "deployments": {
     "canonical": {
-      "address": "0x3E5c63644E683549055b9Be8653de26E0B4CD36E",
+      "address": "0xC51573e1989Fa2A4a08913cC25eCcBe747F28B7c",
       "codeHash": "0x21842597390c4c6e3c1239e434a682b054bd9548eee5e9b1d6a4482731023c0f"
     },
     "eip155": {
