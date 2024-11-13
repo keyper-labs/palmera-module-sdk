@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-private-class-members */
-import Safe, { SafeConfig, SafeTransactionOptionalProps } from '@safe-global/protocol-kit'
-import {
-  EthAdapter,
-  EthAdapterTransaction,
-  SafeTransaction,
-  SafeTransactionDataPartial,
-} from '@safe-global/safe-core-sdk-types'
+import Safe, {
+  SafeConfig,
+  SafeProvider,
+  SafeProviderTransaction,
+  SafeTransactionOptionalProps,
+} from '@safe-global/protocol-kit'
+import { SafeTransaction, SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
 import { decodeFunctionResult, encodeFunctionData, Hex, zeroAddress } from 'viem'
 import palmeraModule from './assets/palmeraModule'
 import {
@@ -33,14 +33,17 @@ import {
   UpdateDepthLimitsParams,
   UpdateSuperParams,
 } from './types'
-import { getPalmeraGuardDeploymentNonDeterministic, getPalmeraModuleDeploymentNonDeterministic } from './deployments/factory'
+import {
+  getPalmeraGuardDeploymentNonDeterministic,
+  getPalmeraModuleDeploymentNonDeterministic,
+} from './deployments/factory'
 
 /**
  * The Palmera class provides a set of methods to interact with the Palmera module and guard.
  */
 class Palmera {
   #protocolKit!: Safe
-  #safeProvider!: EthAdapter
+  #safeProvider!: SafeProvider
   #safeAddress!: Hex
   #orgHash!: Hex
   #chainId!: bigint
@@ -66,7 +69,7 @@ class Palmera {
    * @returns {Promise<Palmera>} A promise that resolves to an initialized Palmera instance.
    */
   static async create(config: SafeConfig) {
-    const safe = await Safe.create(config)
+    const safe = await Safe.init(config)
     const palmera = new Palmera()
     await palmera.#initializePalmera(safe)
     return palmera
@@ -74,7 +77,7 @@ class Palmera {
 
   async #initializePalmera(safe: Safe) {
     this.#protocolKit = safe
-    this.#safeProvider = safe.getEthAdapter()
+    this.#safeProvider = safe.getSafeProvider()
 
     this.#safeAddress = (await this.#protocolKit.getAddress()) as Hex
     this.#chainId = await this.#protocolKit.getChainId()
@@ -92,7 +95,6 @@ class Palmera {
       version: '1',
     })
 
-
     this.#moduleAddress = moduleAddress as Hex
     this.#guardAddress = guardAddress as Hex
     this.#orgHash = await this.getOrgHashBySafe(this.#safeAddress)
@@ -103,7 +105,7 @@ class Palmera {
       to,
       data,
       value: '0',
-    } as EthAdapterTransaction
+    } as SafeProviderTransaction
 
     return parse ? parse(await this.#safeProvider.call(tx)) : (this.#safeProvider.call(tx) as TResult)
   }
