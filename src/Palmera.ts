@@ -5,7 +5,7 @@ import Safe, {
   SafeProviderTransaction,
   SafeTransactionOptionalProps,
 } from '@safe-global/protocol-kit'
-import { SafeTransaction, SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
+import { Transaction, SafeTransaction, SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
 import { decodeFunctionResult, encodeFunctionData, Hex, zeroAddress } from 'viem'
 import palmeraModule from './assets/palmeraModule'
 import {
@@ -108,6 +108,16 @@ class Palmera {
     } as SafeProviderTransaction
 
     return parse ? parse(await this.#safeProvider.call(tx)) : (this.#safeProvider.call(tx) as TResult)
+  }
+
+  #ethTx = (to: Hex, data: Hex): Transaction => {
+    const tx = {
+      to,
+      data,
+      value: '0',
+    } as Transaction
+
+    return tx
   }
 
   async #createSafeTransaction(
@@ -929,18 +939,7 @@ class Palmera {
     return this.#createSafeTransaction(this.#moduleAddress, data, options)
   }
 
-  /**
-   * Creates a Safe transaction to execute a transaction on behalf of a Safe.
-   * @param {ExecTransactionOnBehalfTxParams} ExecTransactionOnBehalfTxParams
-   * @param {PalmeraTransactionData} ExecTransactionOnBehalfTxParams.palmeraTransaction The transaction data to execute. @see encodeTransactionOnBehalfTx
-   * @param {string} ExecTransactionOnBehalfTxParams.signatures The signatures required to execute the transaction.
-   * @param {SafeTransactionOptionalProps} options Optional Safe transaction properties.
-   * @returns {Promise<SafeTransaction>} A promise that resolves to a SafeTransaction.
-   */
-  async execTransactionOnBehalfTx(
-    { palmeraTransaction, signatures }: ExecTransactionOnBehalfTxParams,
-    options?: SafeTransactionOptionalProps,
-  ): Promise<SafeTransaction> {
+  #encodeExecTransactionOnBehalf({ palmeraTransaction, signatures }: ExecTransactionOnBehalfTxParams): Hex {
     const data: Hex = encodeFunctionData({
       abi: palmeraModule.abi,
       functionName: 'execTransactionOnBehalf',
@@ -954,6 +953,34 @@ class Palmera {
         signatures,
       ],
     })
+    return data
+  }
+
+  /**
+   * Creates a transaction to execute a transaction on behalf of a child Safe.
+   * @param {ExecTransactionOnBehalfTxParams} ExecTransactionOnBehalfTxParams
+   * @param {PalmeraTransactionData} ExecTransactionOnBehalfTxParams.palmeraTransaction The transaction data to execute. @see encodeTransactionOnBehalfTx
+   * @param {string} ExecTransactionOnBehalfTxParams.signatures The signatures required to execute the transaction.
+   * @returns {Promise<Transaction>} A promise that resolves to a SafeTransaction.
+   */
+  execTransactionOnBehalf({ palmeraTransaction, signatures }: ExecTransactionOnBehalfTxParams): Transaction {
+    const data: Hex = this.#encodeExecTransactionOnBehalf({ palmeraTransaction, signatures })
+
+    return this.#ethTx(this.#moduleAddress, data)
+  }
+  /**
+   * Creates a Safe transaction to execute a transaction on behalf of a child Safe.
+   * @param {ExecTransactionOnBehalfTxParams} ExecTransactionOnBehalfTxParams
+   * @param {PalmeraTransactionData} ExecTransactionOnBehalfTxParams.palmeraTransaction The transaction data to execute. @see encodeTransactionOnBehalfTx
+   * @param {string} ExecTransactionOnBehalfTxParams.signatures The signatures required to execute the transaction.
+   * @param {SafeTransactionOptionalProps} options Optional Safe transaction properties.
+   * @returns {Promise<SafeTransaction>} A promise that resolves to a SafeTransaction.
+   */
+  async execTransactionOnBehalfTx(
+    { palmeraTransaction, signatures }: ExecTransactionOnBehalfTxParams,
+    options?: SafeTransactionOptionalProps,
+  ): Promise<SafeTransaction> {
+    const data: Hex = this.#encodeExecTransactionOnBehalf({ palmeraTransaction, signatures })
 
     return this.#createSafeTransaction(this.#moduleAddress, data, options)
   }
